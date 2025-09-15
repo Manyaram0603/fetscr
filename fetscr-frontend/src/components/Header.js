@@ -1,10 +1,20 @@
+// src/components/Header.js
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Header.css";
 
 export default function Header() {
   const location = useLocation();
+  const navigate = useNavigate();
   const isPricingPage = location.pathname === "/pricing";
+
+  const user = JSON.parse(localStorage.getItem("fetscr_user"));
+  const token = localStorage.getItem("fetscr_token");
+
+  const getFirstLetter = (name) => {
+    if (!name) return "?";
+    return name.charAt(0).toUpperCase();
+  };
 
   return (
     <header className={isPricingPage ? "header sidebar-header" : "header"}>
@@ -21,12 +31,23 @@ export default function Header() {
 
       {!isPricingPage && (
         <div className="header-right">
-          <Link to="/login">
-            <button className="btn-primary">Login</button>
-          </Link>
-          <Link to="/signup">
-            <button className="btn-outline">Sign In</button>
-          </Link>
+          {token && user ? (
+            <div
+              className="profile-avatar"
+              onClick={() => navigate("/profile")}
+            >
+              {getFirstLetter(user.name)}
+            </div>
+          ) : (
+            <>
+              <Link to="/login">
+                <button className="btn-primary">Login</button>
+              </Link>
+              <Link to="/signup">
+                <button className="btn-outline">Sign Up</button>
+              </Link>
+            </>
+          )}
         </div>
       )}
     </header>

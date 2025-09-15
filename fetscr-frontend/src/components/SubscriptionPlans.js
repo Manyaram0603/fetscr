@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";   // ⬅ import navigate
 import "./plans.css";
 
 const SubscriptionPlans = () => {
@@ -6,23 +7,14 @@ const SubscriptionPlans = () => {
   const [customResults, setCustomResults] = useState(5);
   const [customPrice, setCustomPrice] = useState("$0");
   const [showMoreSubs, setShowMoreSubs] = useState(false);
+  const navigate = useNavigate();   // ⬅ initialize navigate
 
   useEffect(() => {
-  const totalResults = customQueries * customResults;
-  const priceINR = totalResults * 3;
-  const priceUSD = (priceINR / 83).toFixed(2);
-  setCustomPrice(`$${priceUSD}`);
-}, [customQueries, customResults]);
-
-
-  // --- Price Calculation ---
-  function updatePrice() {
     const totalResults = customQueries * customResults;
-    const priceINR = totalResults * 3; // ₹3 per data
-    const priceUSD = (priceINR / 83).toFixed(2); // approx conversion
+    const priceINR = totalResults * 3;
+    const priceUSD = (priceINR / 83).toFixed(2);
     setCustomPrice(`$${priceUSD}`);
-
-  }
+  }, [customQueries, customResults]);
 
   // --- Choosing Predefined Plans ---
   async function choosePlan(plan) {
@@ -34,7 +26,7 @@ const SubscriptionPlans = () => {
     const data = await res.json();
     if (data.success) {
       alert(`✅ Plan activated: ${plan.toUpperCase()} ($${data.priceUSD})`);
-      window.location.href = "index.html";
+      navigate("/home");   // ⬅ redirect to Home instead of index.html
     } else {
       alert("❌ Failed to set plan");
     }
@@ -61,7 +53,7 @@ const SubscriptionPlans = () => {
         `✅ Custom Plan Activated: ${customQueries} queries × ${customResults} results/query.
         Confirmed Price: $${data.priceUSD}`
       );
-      window.location.href = "index.html";
+      navigate("/home");   // ⬅ redirect to Home
     } else {
       alert("❌ Failed to set custom plan");
     }
@@ -71,7 +63,6 @@ const SubscriptionPlans = () => {
     <div className="subscription-container" id="pricing">
       <h1>Choose Your Subscription Plan</h1>
       <div className="plans">
-        
         {/* Free Plan */}
         <div className="plan">
           <h2>Base (Free)</h2>
@@ -148,10 +139,7 @@ const SubscriptionPlans = () => {
         </div>
       </div>
 
-      <button
-        className="back-btn"
-        onClick={() => (window.location.href = "index.html")}
-      >
+      <button className="back-btn" onClick={() => navigate("/home")}>
         ⬅ Back
       </button>
     </div>

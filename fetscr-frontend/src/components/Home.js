@@ -32,9 +32,20 @@ export default function Home() {
 
     try {
       setLoading(true);
+
+      const token = localStorage.getItem("fetscr_token");
+      if (!token) {
+        alert("Please login to scrape data.");
+        navigate("/login");
+        return;
+      }
+
       const res = await fetch("http://localhost:5000/scrape", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // ✅ Attach token
+        },
         body: JSON.stringify({ query: finalQuery, pages: 3 }),
       });
 

@@ -50,3 +50,7 @@
 .snippet {
   max-width: 420px;
 }
+.results-header {
+  margin-top: 80px;  /* push content below header */
+  padding: 20px;
+}

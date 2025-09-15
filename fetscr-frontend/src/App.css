@@ -8,6 +8,10 @@
   font-family: Arial, sans-serif;
   padding: 20px;
 }
+body {
+  margin: 0;
+  padding: 0;
+}
 
 .main-title {
   font-size: 48px;
@@ -76,4 +80,8 @@
 .result-card .link {
   font-size: 13px;
   color: #007bff;
+}
+.results-container {
+  margin-top: 80px;  /* push content below header */
+  padding: 20px;
 }
